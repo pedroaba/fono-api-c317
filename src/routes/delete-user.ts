@@ -2,6 +2,7 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import z from "zod"
 import { STATUS_CODE } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
+import { Session } from "@/lib/session"
 import { auth } from "./hooks/auth"
 
 export const deleteUserRoute: FastifyPluginAsyncZod = async (server) => {
@@ -41,6 +42,7 @@ export const deleteUserRoute: FastifyPluginAsyncZod = async (server) => {
         return reply.status(STATUS_CODE.NOT_FOUND).send()
       }
 
+      await Session.invalidateOlderSessions(user.id)
       await prisma.user.delete({
         where: { id },
       })
