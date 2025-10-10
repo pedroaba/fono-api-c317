@@ -10,7 +10,7 @@ export const logoutRoute: FastifyPluginAsyncZod = async (server) => {
     {
       preHandler: [auth],
       schema: {
-        tags: ["user"],
+        tags: ["auth"],
         summary: "Logout current authenticated user",
         description:
           "Logs out the currently authenticated user. This endpoint requires a valid session cookie or session header for authentication.",
