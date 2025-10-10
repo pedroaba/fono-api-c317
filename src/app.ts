@@ -10,6 +10,9 @@ import {
 import { API_PREFIX } from "./constants/common"
 import { createUserRoute } from "./routes/create-user"
 import { healthRoute } from "./routes/health"
+import { sessionTestsCreateRoute } from "./routes/session-tests/create"
+import { sessionTestsGetRoute } from "./routes/session-tests/get"
+import { sessionTestsDeleteRoute } from "./routes/session-tests/delete"
 
 export const app = fastify({
   logger: {
@@ -58,3 +61,6 @@ app.register(healthRoute, {
 app.register(createUserRoute, {
   prefix: API_PREFIX,
 })
+app.register(sessionTestsCreateRoute, { prefix: API_PREFIX })
+app.register(sessionTestsGetRoute, { prefix: API_PREFIX })
+app.register(sessionTestsDeleteRoute, { prefix: API_PREFIX })
