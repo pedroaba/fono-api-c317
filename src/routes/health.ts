@@ -20,6 +20,6 @@ export const healthRoute: FastifyPluginAsyncZod = async (server) => {
         },
       },
     },
-    async () => ({ status: "ok" })
+    async (_request, reply) => reply.send({ status: "ok" })
   )
 }

@@ -12,6 +12,7 @@ import { prefixBuilder } from "./constants/common"
 import { env } from "./env"
 import { createUserRoute } from "./routes/create-user"
 import { healthRoute } from "./routes/health"
+import { getSessionPlugin } from "./routes/plugin/get-session"
 import { signInRoute } from "./routes/sign-in"
 
 export const app = fastify({
@@ -34,6 +35,8 @@ app.register(fastifyCors, {
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
+
+app.register(getSessionPlugin)
 
 app.register(cookie, {
   secret: env.SECRET_KEY,
