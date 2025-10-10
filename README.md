@@ -186,7 +186,14 @@ Crie um arquivo `.env` na raiz do projeto:
 ```env
 PORT=3000
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/fono?schema=public"
+SECRET_KEY="sua-chave-secreta-aqui"
 ```
+
+**Variáveis de Ambiente:**
+
+- `PORT`: Porta onde o servidor será executado (padrão: 3000)
+- `DATABASE_URL`: String de conexão com o PostgreSQL
+- `SECRET_KEY`: Chave secreta para geração de tokens e sessões
 
 ### 4. Inicie o banco de dados
 
