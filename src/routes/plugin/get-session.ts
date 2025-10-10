@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
 
 export const getSessionPlugin = fp((fastify, _opts, done) => {
   fastify.decorateRequest("getSession", async (request: FastifyRequest) => {
-    const sessionId = request.cookies.session
+    const sessionId = request.cookies.session || String(request.headers.session)
 
     if (!sessionId) {
       return { session: null }

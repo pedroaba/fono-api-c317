@@ -1,11 +1,10 @@
-// biome-ignore lint/performance/noNamespaceImport: <dayjs>
-import * as dayjs from "dayjs"
+import dayjs from "dayjs"
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { STATUS_CODE } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
 
 export async function auth(request: FastifyRequest, reply: FastifyReply) {
-  const session = request.cookies.session
+  const session = request.cookies.session || String(request.headers.session)
 
   if (!session) {
     return reply.status(STATUS_CODE.UNAUTHORIZED).send()

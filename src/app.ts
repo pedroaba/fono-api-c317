@@ -12,6 +12,7 @@ import { prefixBuilder } from "./constants/common"
 import { env } from "./env"
 import { createUserRoute } from "./routes/create-user"
 import { healthRoute } from "./routes/health"
+import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
 import { signInRoute } from "./routes/sign-in"
 
@@ -49,6 +50,20 @@ app.register(fastifySwagger, {
       title: "Fono API",
       version: "1.0.0",
     },
+    components: {
+      securitySchemes: {
+        cookie: {
+          type: "apiKey",
+          name: "session",
+          in: "cookie",
+        },
+        session: {
+          type: "apiKey",
+          name: "session",
+          in: "header",
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 })
@@ -62,6 +77,7 @@ app.register(import("@scalar/fastify-api-reference"), {
   },
 })
 
+// =========== Health Routes ===========
 app.register(healthRoute, {
   prefix: "/health",
 })
@@ -70,10 +86,16 @@ app.register(healthRoute, {
   prefix: prefixBuilder("health"),
 })
 
+// =========== User Routes ===========
 app.register(createUserRoute, {
   prefix: prefixBuilder("users"),
 })
 
+app.register(meRoute, {
+  prefix: prefixBuilder("users"),
+})
+
+// =========== Auth Routes ===========
 app.register(signInRoute, {
   prefix: prefixBuilder("auth"),
 })
