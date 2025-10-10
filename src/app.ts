@@ -15,6 +15,7 @@ import { deleteUserRoute } from "./routes/delete-user"
 import { fetchUsersRoute } from "./routes/fetch-users"
 import { getUserRoute } from "./routes/get-user"
 import { healthRoute } from "./routes/health"
+import { logoutRoute } from "./routes/logout"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
 import { signInRoute } from "./routes/sign-in"
@@ -117,5 +118,9 @@ app.register(updateUserRoute, {
 
 // =========== Auth Routes ===========
 app.register(signInRoute, {
+  prefix: prefixBuilder("auth"),
+})
+
+app.register(logoutRoute, {
   prefix: prefixBuilder("auth"),
 })
