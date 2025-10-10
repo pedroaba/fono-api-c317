@@ -11,6 +11,7 @@ import {
 import { prefixBuilder } from "./constants/common"
 import { env } from "./env"
 import { createUserRoute } from "./routes/create-user"
+import { getUserRoute } from "./routes/get-user"
 import { healthRoute } from "./routes/health"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
@@ -92,6 +93,10 @@ app.register(createUserRoute, {
 })
 
 app.register(meRoute, {
+  prefix: prefixBuilder("users"),
+})
+
+app.register(getUserRoute, {
   prefix: prefixBuilder("users"),
 })
 
