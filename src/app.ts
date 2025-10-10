@@ -12,11 +12,13 @@ import { prefixBuilder } from "./constants/common"
 import { env } from "./env"
 import { createUserRoute } from "./routes/create-user"
 import { deleteUserRoute } from "./routes/delete-user"
+import { fetchUsersRoute } from "./routes/fetch-users"
 import { getUserRoute } from "./routes/get-user"
 import { healthRoute } from "./routes/health"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
 import { signInRoute } from "./routes/sign-in"
+import { updateUserRoute } from "./routes/update-user"
 
 export const app = fastify({
   logger: {
@@ -102,6 +104,14 @@ app.register(getUserRoute, {
 })
 
 app.register(deleteUserRoute, {
+  prefix: prefixBuilder("users"),
+})
+
+app.register(fetchUsersRoute, {
+  prefix: prefixBuilder("users"),
+})
+
+app.register(updateUserRoute, {
   prefix: prefixBuilder("users"),
 })
 
