@@ -1,3 +1,4 @@
+import cookie from "@fastify/cookie"
 import fastifyCors from "@fastify/cors"
 import { fastifySwagger } from "@fastify/swagger"
 import fastify from "fastify"
@@ -7,9 +8,11 @@ import {
   validatorCompiler,
   type ZodTypeProvider,
 } from "fastify-type-provider-zod"
-import { API_PREFIX } from "./constants/common"
+import { prefixBuilder } from "./constants/common"
+import { env } from "./env"
 import { createUserRoute } from "./routes/create-user"
 import { healthRoute } from "./routes/health"
+import { signInRoute } from "./routes/sign-in"
 
 export const app = fastify({
   logger: {
@@ -32,6 +35,11 @@ app.register(fastifyCors, {
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
 
+app.register(cookie, {
+  secret: env.SECRET_KEY,
+  prefix: "fono",
+})
+
 app.register(fastifySwagger, {
   openapi: {
     info: {
@@ -51,10 +59,18 @@ app.register(import("@scalar/fastify-api-reference"), {
   },
 })
 
-app.register(healthRoute)
 app.register(healthRoute, {
-  prefix: API_PREFIX,
+  prefix: "/health",
 })
+
+app.register(healthRoute, {
+  prefix: prefixBuilder("health"),
+})
+
 app.register(createUserRoute, {
-  prefix: API_PREFIX,
+  prefix: prefixBuilder("users"),
+})
+
+app.register(signInRoute, {
+  prefix: prefixBuilder("auth"),
 })
