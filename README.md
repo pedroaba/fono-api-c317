@@ -530,6 +530,37 @@ Este projeto utiliza [Ultracite](https://ultracite.com/) com [Biome](https://bio
 - Práticas modernas de TypeScript
 - Formatação automática
 
+### Idioma do Código
+
+**Todo o código deve ser escrito em inglês**, incluindo:
+
+- Nomes de variáveis, funções, classes e tipos
+- Comentários e documentação inline
+- Nomes de arquivos e diretórios
+- Schemas e validações Zod
+- Logs de desenvolvimento
+
+**Exceção:** Mensagens retornadas ao usuário final (responses da API, mensagens de erro do cliente, validações) devem estar em português.
+
+**Exemplos:**
+
+```typescript
+// ✅ Correto
+const userEmail = "user@example.com";
+const MIN_PASSWORD_LENGTH = 8;
+
+if (!isValidEmail(userEmail)) {
+  // Mensagem em português para o usuário
+  return reply.status(400).send({
+    error: "O e-mail fornecido é inválido",
+  });
+}
+
+// ❌ Incorreto
+const emailDoUsuario = "user@example.com";
+const TAMANHO_MINIMO_SENHA = 8;
+```
+
 Execute `npx ultracite fix` antes de commitar alterações.
 
 ## 🤝 Contribuindo
