@@ -11,6 +11,7 @@ import {
 import { prefixBuilder } from "./constants/common"
 import { env } from "./env"
 import { createUserRoute } from "./routes/create-user"
+import { deleteUserRoute } from "./routes/delete-user"
 import { getUserRoute } from "./routes/get-user"
 import { healthRoute } from "./routes/health"
 import { meRoute } from "./routes/me"
@@ -97,6 +98,10 @@ app.register(meRoute, {
 })
 
 app.register(getUserRoute, {
+  prefix: prefixBuilder("users"),
+})
+
+app.register(deleteUserRoute, {
   prefix: prefixBuilder("users"),
 })
 
