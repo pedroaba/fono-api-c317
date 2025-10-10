@@ -11,3 +11,20 @@ services:
       - POSTGRES_DB=fono
     volumes:
       - ./docker/setup.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d fono"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/fono?schema=public
+    ports:
+      - 3001:3000
