@@ -18,6 +18,10 @@ import { healthRoute } from "./routes/health"
 import { sessionTestsCreateRoute } from "./routes/session-tests/create"
 import { sessionTestsGetRoute } from "./routes/session-tests/get"
 import { sessionTestsDeleteRoute } from "./routes/session-tests/delete"
+import { pronounceTestsCreateRoute } from "./routes/pronounce-tests/create"
+import { pronounceTestsGetRoute } from "./routes/pronounce-tests/get"
+import { pronounceTestsUpdateRoute } from "./routes/pronounce-tests/update"
+import { pronounceTestsDeleteRoute } from "./routes/pronounce-tests/delete"
 import { logoutRoute } from "./routes/logout"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
@@ -130,3 +134,7 @@ app.register(logoutRoute, {
 app.register(sessionTestsCreateRoute, { prefix: API_PREFIX })
 app.register(sessionTestsGetRoute, { prefix: API_PREFIX })
 app.register(sessionTestsDeleteRoute, { prefix: API_PREFIX })
+app.register(pronounceTestsCreateRoute, { prefix: API_PREFIX })
+app.register(pronounceTestsGetRoute, { prefix: API_PREFIX })
+app.register(pronounceTestsUpdateRoute, { prefix: API_PREFIX })
+app.register(pronounceTestsDeleteRoute, { prefix: API_PREFIX })
