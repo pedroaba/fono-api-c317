@@ -4,9 +4,9 @@ import { STATUS_CODE } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
 
 export const pronounceTestsDeleteRoute: FastifyPluginAsyncZod = async (
-  server,
+  server
 ) => {
-  await server.delete(
+  server.delete(
     "/pronounce-tests/:id",
     {
       schema: {
@@ -36,6 +36,6 @@ export const pronounceTestsDeleteRoute: FastifyPluginAsyncZod = async (
 
       reply.status(STATUS_CODE.NO_CONTENT)
       return
-    },
+    }
   )
 }

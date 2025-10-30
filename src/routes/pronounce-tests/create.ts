@@ -8,7 +8,7 @@ const MAX_FEEDBACK_LENGTH = 1024
 export const pronounceTestsCreateRoute: FastifyPluginAsyncZod = async (
   server
 ) => {
-  await server.post(
+  server.post(
     "/pronounce-tests",
     {
       schema: {

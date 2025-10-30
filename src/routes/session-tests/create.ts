@@ -3,8 +3,10 @@ import { z } from "zod"
 import { STATUS_CODE } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
 
-export const sessionTestsCreateRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.post(
+export const sessionTestsCreateRoute: FastifyPluginAsyncZod = async (
+  server
+) => {
+  server.post(
     "/session-tests",
     {
       schema: {
@@ -20,9 +22,7 @@ export const sessionTestsCreateRoute: FastifyPluginAsyncZod = async (server) => 
           400: z
             .object({ error: z.string() })
             .describe("Bad request - invalid input"),
-          404: z
-            .object({ error: z.string() })
-            .describe("User not found"),
+          404: z.object({ error: z.string() }).describe("User not found"),
         },
       },
     },
@@ -43,7 +43,6 @@ export const sessionTestsCreateRoute: FastifyPluginAsyncZod = async (server) => 
 
       reply.status(STATUS_CODE.CREATED)
       return session
-    },
+    }
   )
 }
-

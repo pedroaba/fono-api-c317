@@ -13,10 +13,8 @@ const pronounceTestSchema = z.object({
   updatedAt: z.string(),
 })
 
-export const pronounceTestsGetRoute: FastifyPluginAsyncZod = async (
-  server,
-) => {
-  await server.get(
+export const pronounceTestsGetRoute: FastifyPluginAsyncZod = async (server) => {
+  server.get(
     "/pronounce-tests",
     {
       schema: {
@@ -54,10 +52,10 @@ export const pronounceTestsGetRoute: FastifyPluginAsyncZod = async (
           updatedAt: item.updatedAt.toISOString(),
         })),
       }
-    },
+    }
   )
 
-  await server.get(
+  server.get(
     "/pronounce-tests/:id",
     {
       schema: {
@@ -91,6 +89,6 @@ export const pronounceTestsGetRoute: FastifyPluginAsyncZod = async (
         createdAt: pronounceTest.createdAt.toISOString(),
         updatedAt: pronounceTest.updatedAt.toISOString(),
       }
-    },
+    }
   )
 }

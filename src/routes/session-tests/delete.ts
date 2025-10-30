@@ -3,8 +3,10 @@ import { z } from "zod"
 import { STATUS_CODE } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
 
-export const sessionTestsDeleteRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.delete(
+export const sessionTestsDeleteRoute: FastifyPluginAsyncZod = async (
+  server
+) => {
+  server.delete(
     "/session-tests/:id",
     {
       schema: {
@@ -26,7 +28,6 @@ export const sessionTestsDeleteRoute: FastifyPluginAsyncZod = async (server) => 
       await prisma.sessionTest.delete({ where: { id } })
       reply.status(STATUS_CODE.NO_CONTENT)
       return
-    },
+    }
   )
 }
-

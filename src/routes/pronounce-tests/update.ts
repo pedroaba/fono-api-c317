@@ -13,19 +13,19 @@ const updateBodySchema = z
       .min(1, "feedback cannot be empty")
       .max(
         MAX_FEEDBACK_LENGTH,
-        `feedback cannot exceed ${MAX_FEEDBACK_LENGTH} characters`,
+        `feedback cannot exceed ${MAX_FEEDBACK_LENGTH} characters`
       )
       .optional(),
   })
   .refine(
     (data) => data.score !== undefined || data.feedback !== undefined,
-    "At least one field must be provided",
+    "At least one field must be provided"
   )
 
 export const pronounceTestsUpdateRoute: FastifyPluginAsyncZod = async (
-  server,
+  server
 ) => {
-  await server.patch(
+  server.patch(
     "/pronounce-tests/:id",
     {
       schema: {
@@ -78,6 +78,6 @@ export const pronounceTestsUpdateRoute: FastifyPluginAsyncZod = async (
         createdAt: updated.createdAt.toISOString(),
         updatedAt: updated.updatedAt.toISOString(),
       }
-    },
+    }
   )
 }

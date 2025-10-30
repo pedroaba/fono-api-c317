@@ -4,8 +4,7 @@ import { STATUS_CODE } from "@/constants/status-code"
 import { prisma } from "@/lib/prisma"
 
 export const sessionTestsGetRoute: FastifyPluginAsyncZod = async (server) => {
-  // List session tests by user
-  await server.get(
+  server.get(
     "/session-tests",
     {
       schema: {
@@ -23,7 +22,7 @@ export const sessionTestsGetRoute: FastifyPluginAsyncZod = async (server) => {
                   userId: z.string(),
                   createdAt: z.string(),
                   updatedAt: z.string(),
-                }),
+                })
               ),
             })
             .describe("Session tests list"),
@@ -46,11 +45,11 @@ export const sessionTestsGetRoute: FastifyPluginAsyncZod = async (server) => {
           updatedAt: i.updatedAt.toISOString(),
         })),
       }
-    },
+    }
   )
 
   // Get one session test by id
-  await server.get(
+  server.get(
     "/session-tests/:id",
     {
       schema: {
@@ -80,7 +79,6 @@ export const sessionTestsGetRoute: FastifyPluginAsyncZod = async (server) => {
         createdAt: item.createdAt.toISOString(),
         updatedAt: item.updatedAt.toISOString(),
       }
-    },
+    }
   )
 }
-
