@@ -4,7 +4,7 @@ import { z } from "zod"
 const DEFAULT_PORT = 3000
 
 const envSchema = z.object({
-  PORT: z.number().default(DEFAULT_PORT),
+  PORT: z.coerce.number().default(DEFAULT_PORT),
   DATABASE_URL: z.string({ error: "DATABASE_URL is required" }),
   SECRET_KEY: z.string({ error: "SECRET_KEY is required" }),
 })

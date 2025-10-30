@@ -15,6 +15,9 @@ import { deleteUserRoute } from "./routes/delete-user"
 import { fetchUsersRoute } from "./routes/fetch-users"
 import { getUserRoute } from "./routes/get-user"
 import { healthRoute } from "./routes/health"
+import { sessionTestsCreateRoute } from "./routes/session-tests/create"
+import { sessionTestsGetRoute } from "./routes/session-tests/get"
+import { sessionTestsDeleteRoute } from "./routes/session-tests/delete"
 import { logoutRoute } from "./routes/logout"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
@@ -124,3 +127,6 @@ app.register(signInRoute, {
 app.register(logoutRoute, {
   prefix: prefixBuilder("auth"),
 })
+app.register(sessionTestsCreateRoute, { prefix: API_PREFIX })
+app.register(sessionTestsGetRoute, { prefix: API_PREFIX })
+app.register(sessionTestsDeleteRoute, { prefix: API_PREFIX })

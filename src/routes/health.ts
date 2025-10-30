@@ -1,5 +1,5 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
-import z from "zod"
+import { z } from "zod"
 
 export const healthRoute: FastifyPluginAsyncZod = async (server) => {
   await server.get(
@@ -9,17 +9,10 @@ export const healthRoute: FastifyPluginAsyncZod = async (server) => {
         tags: ["health"],
         summary: "Health check",
         response: {
-          200: z
-            .object({ status: z.string() })
-            .describe("Health check ok!")
-            .meta({
-              example: {
-                status: "ok",
-              },
-            }),
+          200: z.object({ status: z.string() }).describe("Health check ok!"),
         },
       },
     },
-    async (_request, reply) => reply.send({ status: "ok" })
+    async () => ({ status: "ok" }),
   )
 }
