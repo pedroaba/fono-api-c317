@@ -78,7 +78,7 @@ export const getPronouncesRoute: FastifyPluginAsyncZod = async (server) => {
       const pronounces = await prisma.pronounces.findMany({
         where: {
           word: word ? { contains: word, mode: "insensitive" } : undefined,
-          userId: userId ? { equals: userId, mode: "insensitive" } : undefined,
+          userId: userId ? { equals: userId } : undefined,
         },
         skip,
         take: limit,
