@@ -18,6 +18,9 @@ import { healthRoute } from "./routes/health"
 import { logoutRoute } from "./routes/logout"
 import { meRoute } from "./routes/me"
 import { getSessionPlugin } from "./routes/plugin/get-session"
+import { createPronounceRoute } from "./routes/pronouces/create"
+import { deletePronounceRoute } from "./routes/pronouces/delete"
+import { getPronouncesRoute } from "./routes/pronouces/get"
 import { pronounceTestsCreateRoute } from "./routes/pronounce-tests/create"
 import { pronounceTestsDeleteRoute } from "./routes/pronounce-tests/delete"
 import { pronounceTestsGetRoute } from "./routes/pronounce-tests/get"
@@ -138,3 +141,6 @@ app.register(pronounceTestsCreateRoute, { prefix: API_PREFIX })
 app.register(pronounceTestsGetRoute, { prefix: API_PREFIX })
 app.register(pronounceTestsUpdateRoute, { prefix: API_PREFIX })
 app.register(pronounceTestsDeleteRoute, { prefix: API_PREFIX })
+app.register(createPronounceRoute, { prefix: prefixBuilder("pronounces") })
+app.register(deletePronounceRoute, { prefix: prefixBuilder("pronounces") })
+app.register(getPronouncesRoute, { prefix: prefixBuilder("pronounces") })

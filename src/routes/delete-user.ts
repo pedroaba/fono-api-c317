@@ -6,7 +6,7 @@ import { Session } from "@/lib/session"
 import { auth } from "./hooks/auth"
 
 export const deleteUserRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.delete(
+  server.delete(
     "/:id",
     {
       preHandler: [auth],

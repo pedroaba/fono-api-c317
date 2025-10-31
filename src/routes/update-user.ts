@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "./hooks/auth"
 
 export const updateUserRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.patch(
+  server.patch(
     "/:id",
     {
       preHandler: [auth],

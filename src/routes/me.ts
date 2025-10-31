@@ -4,7 +4,7 @@ import { STATUS_CODE } from "@/constants/status-code"
 import { auth } from "./hooks/auth"
 
 export const meRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.get(
+  server.get(
     "/me",
     {
       preHandler: [auth],

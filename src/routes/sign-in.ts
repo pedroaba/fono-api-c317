@@ -9,7 +9,7 @@ import { Session } from "@/lib/session"
 const SESSION_MAX_AGE = 60 * 60 * 24 * 2
 
 export const signInRoute: FastifyPluginAsyncZod = async (server) => {
-  await server.post(
+  server.post(
     "/sign-in",
     {
       schema: {
