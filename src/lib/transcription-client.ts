@@ -1,6 +1,5 @@
 // src/lib/transcription-client.ts
 import { env } from "../env"
-import FormData from "form-data"
 
 export interface TranscriptionResult {
   text: string
@@ -28,16 +27,17 @@ export class TranscriptionClient {
     try {
       const mimeType = this.getMimeType(filename)
 
+      // ✅ USAR FormData NATIVO DO NODE
       const formData = new FormData()
 
-      // ✅ BUFFER DIRETO — SEM BLOB
-      formData.append("file", audioBuffer, {
-        filename,
-        contentType: mimeType,
-      })
+      // ✅ USAR BLOB NATIVO (ISSO QUE O FASTAPI ENTENDE DIREITO)
+      const uint8Array = new Uint8Array(audioBuffer)
+      const blob = new Blob([uint8Array], { type: mimeType })
+
+      // ⚠️ NOME DO CAMPO PRECISA SER "file"
+      formData.append("file", blob, filename)
 
       const headers: Record<string, string> = {
-        ...formData.getHeaders(), // ✅ headers corretos do multipart
         Accept: "application/json",
       }
 
@@ -46,11 +46,12 @@ export class TranscriptionClient {
       }
 
       console.log(`📤 Enviando arquivo ${filename} (${audioBuffer.length} bytes) para transcrição...`)
+      console.log(`🎯 Endpoint: ${this.baseUrl}`)
 
       const response = await fetch(this.baseUrl, {
         method: "POST",
         headers,
-        body: formData as any, // ✅ Node + FormData
+        body: formData,
       })
 
       if (!response.ok) {
