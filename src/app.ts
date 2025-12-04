@@ -30,6 +30,8 @@ import { sessionTestsDeleteRoute } from "./routes/session-tests/delete"
 import { sessionTestsGetRoute } from "./routes/session-tests/get"
 import { signInRoute } from "./routes/sign-in"
 import { updateUserRoute } from "./routes/update-user"
+import { transcriptionTestRoute } from "./routes/transcription-test"
+import { testAudioRoute } from "./routes/test-audio"
 
 export const app = fastify({
   logger: {
@@ -134,6 +136,10 @@ app.register(signInRoute, {
 app.register(logoutRoute, {
   prefix: prefixBuilder("auth"),
 })
+
+app.register(transcriptionTestRoute, {
+  prefix: "/api",
+})
 app.register(sessionTestsCreateRoute, { prefix: API_PREFIX })
 app.register(sessionTestsGetRoute, { prefix: API_PREFIX })
 app.register(sessionTestsDeleteRoute, { prefix: API_PREFIX })
@@ -144,3 +150,7 @@ app.register(pronounceTestsDeleteRoute, { prefix: API_PREFIX })
 app.register(createPronounceRoute, { prefix: prefixBuilder("pronounces") })
 app.register(deletePronounceRoute, { prefix: prefixBuilder("pronounces") })
 app.register(getPronouncesRoute, { prefix: prefixBuilder("pronounces") })
+
+app.register(testAudioRoute, {
+  prefix: "/api",
+})

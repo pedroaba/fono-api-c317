@@ -17,14 +17,45 @@ services:
       timeout: 5s
       retries: 10
 
+  audio-transcription-api:
+    build: .
+    image: mateusumelo/c317-whisper-api-audio-transcription-api
+    ports:
+      - "8000:8000"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - API_RELOAD=false
+      - WHISPER_MODEL_SIZE=base
+      - WHISPER_DEVICE=cpu
+      - WHISPER_COMPUTE_TYPE=int8
+      - MAX_AUDIO_SIZE_MB=25
+      - MODEL_CACHE_DIR=/app/models
+      - TEMP_UPLOAD_DIR=/tmp
+    volumes:
+      - ./data/temp_uploads:/tmp
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
   app:
     build: .
     depends_on:
       database:
         condition: service_healthy
+      audio-transcription-api:
+        condition: service_healthy
     environment:
       - NODE_ENV=production
       - PORT=3000
       - DATABASE_URL=postgresql://postgres:postgres@database:5432/fono?schema=public
+      - SECRET_KEY=super_secret_key_troque_isso_aqui
+      - TRANSCRIPTION_API_URL=http://audio-transcription-api:8000/api/v1/transcribe/file
+      - TEST_AUDIO_PATH=assets/audios
+      - DEFAULT_AUDIO_FILE=teste.ogg
+      - EXPECTED_TRANSCRIPTION=Teste de transcrição
     ports:
       - 3001:3000
