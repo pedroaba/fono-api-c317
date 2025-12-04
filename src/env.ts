@@ -1,4 +1,5 @@
 // src/env.ts
+import crypto from "node:crypto"
 import "dotenv/config"
 import { z } from "zod"
 
@@ -20,4 +21,20 @@ const envSchema = z.object({
     EXPECTED_TRANSCRIPTION: z.string().default("Teste de transcrição"),
 })
 
-export const env = envSchema.parse(process.env)
+const isSecretMissing =
+  !process.env.SECRET_KEY || process.env.SECRET_KEY.trim().length === 0
+
+const envVars = {
+  ...process.env,
+  SECRET_KEY: isSecretMissing
+    ? crypto.randomBytes(32).toString("hex")
+    : process.env.SECRET_KEY,
+}
+
+export const env = envSchema.parse(envVars)
+
+if (isSecretMissing) {
+  console.warn(
+    "SECRET_KEY was not provided. Generated an ephemeral key for this process.",
+  )
+}
