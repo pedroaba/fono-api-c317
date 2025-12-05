@@ -33,6 +33,7 @@
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.1.0",
+    "@fastify/multipart": "^9.0.1",
     "@fastify/swagger": "^9.5.2",
     "@prisma/client": "^6.17.0",
     "@scalar/fastify-api-reference": "^1.37.0",

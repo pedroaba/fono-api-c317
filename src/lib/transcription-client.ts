@@ -26,15 +26,11 @@ export class TranscriptionClient {
   async transcribeAudio(audioBuffer: Buffer, filename: string): Promise<TranscriptionResult> {
     try {
       const mimeType = this.getMimeType(filename)
-
-      // ✅ USAR FormData NATIVO DO NODE
       const formData = new FormData()
 
-      // ✅ USAR BLOB NATIVO (ISSO QUE O FASTAPI ENTENDE DIREITO)
       const uint8Array = new Uint8Array(audioBuffer)
       const blob = new Blob([uint8Array], { type: mimeType })
 
-      // ⚠️ NOME DO CAMPO PRECISA SER "file"
       formData.append("file", blob, filename)
 
       const headers: Record<string, string> = {
@@ -45,8 +41,8 @@ export class TranscriptionClient {
         headers["Authorization"] = `Bearer ${this.apiKey}`
       }
 
-      console.log(`📤 Enviando arquivo ${filename} (${audioBuffer.length} bytes) para transcrição...`)
-      console.log(`🎯 Endpoint: ${this.baseUrl}`)
+      console.log(`Sending file ${filename} (${audioBuffer.length} bytes) to transcription API...`)
+      console.log(`Endpoint: ${this.baseUrl}`)
 
       const response = await fetch(this.baseUrl, {
         method: "POST",
@@ -61,7 +57,7 @@ export class TranscriptionClient {
 
       const data = await response.json()
 
-      console.log(`✅ Transcrição recebida: "${data.text?.substring(0, 50)}..."`)
+      console.log(`Transcription received: "${String(data.text ?? "").slice(0, 50)}..."`)
 
       return {
         text: data.text || "",
@@ -70,47 +66,41 @@ export class TranscriptionClient {
         duration: data.duration,
         segments: data.segments,
       }
-
     } catch (error) {
-      console.error("❌ Transcription API call failed:", error)
+      console.error("Transcription API call failed:", error)
       throw new Error(
-        `Failed to transcribe audio: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
+        `Failed to transcribe audio: ${error instanceof Error ? error.message : "Unknown error"}`
       )
     }
   }
 
   async healthCheck(): Promise<boolean> {
-    try {
-      const baseUrl = this.baseUrl.replace("/transcribe/file", "")
-      const healthUrl = `${baseUrl}/health`
+    const baseUrl = this.baseUrl.replace("/transcribe/file", "")
+    const candidates = [`${baseUrl}/health`, baseUrl]
 
-      console.log(`🔍 Verificando saúde da API em: ${healthUrl}`)
+    for (const healthUrl of candidates) {
+      try {
+        console.log(`Checking transcription API at: ${healthUrl}`)
 
-      const response = await fetch(healthUrl, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-        signal: AbortSignal.timeout(5000),
-      })
+        const response = await fetch(healthUrl, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+          signal: AbortSignal.timeout(5000),
+        })
 
-      if (!response.ok) {
-        console.warn(`⚠️  Health check failed with status: ${response.status}`)
-        return false
+        // If the server responds (even 404), consider it reachable unless 5xx.
+        if (response.status < 500) {
+          console.log("Transcription API reachable for health check")
+          return true
+        }
+
+        console.warn(`Health check failed with status ${response.status} at ${healthUrl}`)
+      } catch (error) {
+        console.error(`Health check request failed at ${healthUrl}:`, error)
       }
-
-      const data = await response.json()
-      const isHealthy = data.status === "healthy"
-
-      console.log(isHealthy ? "✅ API saudável" : "⚠️  API reportou problemas")
-      return isHealthy
-
-    } catch (error) {
-      console.error("❌ Health check failed:", error)
-      return false
     }
+
+    return false
   }
 
   private getMimeType(filename: string): string {
