@@ -2,6 +2,7 @@ import cookie from "@fastify/cookie"
 import fastifyCors from "@fastify/cors"
 import { fastifySwagger } from "@fastify/swagger"
 import fastify from "fastify"
+import fastifyMultipart from "@fastify/multipart"
 import {
   jsonSchemaTransform,
   serializerCompiler,
@@ -32,6 +33,7 @@ import { signInRoute } from "./routes/sign-in"
 import { updateUserRoute } from "./routes/update-user"
 import { transcriptionTestRoute } from "./routes/transcription-test"
 import { testAudioRoute } from "./routes/test-audio"
+import { transcribeFileRoute } from "./routes/transcribe-file"
 
 export const app = fastify({
   logger: {
@@ -50,6 +52,8 @@ app.register(fastifyCors, {
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 })
+
+app.register(fastifyMultipart)
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
@@ -154,3 +158,4 @@ app.register(getPronouncesRoute, { prefix: prefixBuilder("pronounces") })
 app.register(testAudioRoute, {
   prefix: "/api",
 })
+app.register(transcribeFileRoute)
