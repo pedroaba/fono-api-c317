@@ -18,13 +18,12 @@ services:
       retries: 10
 
   audio-transcription-api:
-    build: .
     image: mateusumelo/c317-whisper-api-audio-transcription-api
     ports:
-      - "8000:3000"
+      - "8000:8000"
     environment:
       - API_HOST=0.0.0.0
-      - API_PORT=3000
+      - API_PORT=8000
       - API_RELOAD=false
       - WHISPER_MODEL_SIZE=base
       - WHISPER_DEVICE=cpu
@@ -36,7 +35,7 @@ services:
     volumes:
       - ./data/temp_uploads:/tmp
     healthcheck:
-      test: ["CMD", "curl", "-s", "http://localhost:3000"]
+      test: ["CMD", "curl", "-s", "http://localhost:8000"]
       interval: 30s
       timeout: 10s
       retries: 3
